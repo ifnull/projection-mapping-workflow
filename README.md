@@ -2,6 +2,8 @@
 
 > A practical pipeline for capturing, aligning, generating, and projecting AI-assisted visuals—ending with a Raspberry Pi playback loop.
 
+![](images/hero.jpg)
+
 ---
 
 ## Terms (canonical)
@@ -57,6 +59,7 @@
 
 2. **Collect Inspiration Images**  
    Build a small mood board: textures, motifs, characters, architectural treatments that match your facade.
+   ![](images/inspiration.jpg)
 
 3. **Create a Theme Profile (YAML) with Gemini**  
    Upload a few inspiration images to Gemini and ask it to output a **single YAML profile** for SDCS (prompt, negative prompt, control strength, style preset, output format).  
@@ -64,8 +67,38 @@
    - Keep the **negative prompt** comprehensive (block low-quality traits and off-theme elements).  
    - Default `control_strength: 0.8`, `style_preset: cinematic|photographic`, `output_format: jpeg`.
 
-   **Prompt I give Gemini (abridged):**  
-   > *Analyze these images and output a single YAML config matching the template… (include your detailed template here).*
+   **Prompt I give Gemini:**  
+   ```
+   You are an AI assistant, and I need your help to create highly detailed configuration profiles for a Stable Diffusion API.
+
+   Your task is to analyze the reference image(s) I provide and generate a single, complete YAML configuration file that can be used to create a new, very similar image. You must follow these specific formatting rules for all of your responses.
+
+   Your output must be only a YAML configuration file, structured exactly like this template:
+    ```
+
+# Profile configuration for [A brief, descriptive title of the scene]
+
+prompt: "A single, highly-detailed, photorealistic, and extremely verbose string. This description must be meticulous. You must describe all key subjects, the position of every major element, the environment, all textures (e.g., 'vintage floral wallpaper', 'worn plaid fabric', 'wet biomechanical vines'), the lighting (e.g., 'primary light from multi-colored string lights', 'eerie blue backlight', 'intense crimson red glow'), the atmosphere ('nostalgic', 'eerie', 'ominous'), and the overall artistic style ('cinematic', 'horror', 'Stranger Things aesthetic'). Be as specific as possible to leave no room for misinterpretation."
+
+negative_prompt: "A single string of comma-separated keywords. This must always include a base set of 'blurry, low quality, noisy, grainy, cartoon, anime, illustration, painting, sketch, ugly, deformed, watermark, text, signature'. You must also add specific negative keywords that are the *opposite* of the prompt's main subjects and mood. For example, if the prompt is 'dark, night, horror', the negative prompt must also include 'bright, daytime, cheerful, happy, clean, modern'."
+
+control_strength: 0.8
+
+style_preset: "cinematic"
+
+output_format: "jpeg"
+```
+
+Key Instructions to Always Follow:
+
+* prompt: The description must be as long and verbose as possible. It is the most important part.
+* negative_prompt: Must be a comprehensive list to block common errors and unwanted themes.
+* control_strength: You must always include this field. The default value must be 0.8. Do not change it unless I explicitly ask you to.
+* style_preset: You must always include this field. Default to cinematic or photographic, whichever best fits the image.
+* output_format: You must always include this field, and its value must always be jpeg.
+
+My first request is to describe the image(s) I have attached to this message. Please analyze them and generate the YAML profile now.   
+   ```
 
 ---
 
@@ -241,27 +274,11 @@ sdcs-wrapper
 Pipfile
 ```
 
-### Example
+### Usage
 ```bash
 export STABILITY_SECRET_KEY="sk-***"
 ./sdcs-wrapper --profile halloween_gothic --input-image ./photos/structure_reference.jpg
-```
 
-### Pipfile
-```toml
-[[source]]
-name = "pypi"
-url = "https://pypi.org/simple"
-verify_ssl = true
-
-[packages]
-requests = "*"
-pyyaml = "*"
-
-[dev-packages]
-
-[requires]
-python_version = "3.11"
 ```
 
 
