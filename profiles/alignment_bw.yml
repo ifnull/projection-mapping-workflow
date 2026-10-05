@@ -1,0 +1,6 @@
+# Profile configuration for creating alignment image
+prompt: "Transform this image into bold, high-contrast black and white with thick outlines, clean architectural edges (walls, roofline, windows, doors), flat white fill, no color, and minimal shading. Technical schematic feel."
+negative_prompt: "color, gradients, shading, noise, blur, low quality, text, logo, watermark, people, figures, background clutter"
+control_strength: 0.95
+style_preset: "photographic"
+output_format: "jpeg"
