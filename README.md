@@ -272,9 +272,24 @@ Pipfile
 ### Usage
 ```bash
 export STABILITY_SECRET_KEY="sk-***"
-./sdcs-wrapper --profile halloween_gothic --input-image ./photos/structure_reference.jpg
+python sdsc-wrapper.py --profile halloween_gothic --input-image ./photos/structure_reference.jpg
 
 ```
+
+### Profiles
+
+Ready-to-use profiles live in [`profiles/`](profiles/). The wrapper loads `./profiles/<name>.yml`, so run it from the repository root.
+
+- [`profiles/alignment_bw.yml`](profiles/alignment_bw.yml): turns a photo of your projection surface into the high-contrast black-and-white outline used for alignment.
+
+To use a profile without cloning, open it on GitHub and use **Download raw file** (or **Raw**, then save), and put it in a `profiles/` folder next to `sdsc-wrapper.py`. Then:
+
+```bash
+export STABILITY_SECRET_KEY="sk-***"
+python sdsc-wrapper.py --profile alignment_bw --input-image <path-to-reference-image>
+```
+
+Keep API keys in the environment variable, never in a profile, and don't commit private reference photos.
 
 
 ---
